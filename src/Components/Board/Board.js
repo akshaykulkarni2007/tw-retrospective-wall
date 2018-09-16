@@ -4,10 +4,14 @@ import Card from "../Card/Card"
 
 class Board extends Component {
 	state = {
+		currentSection: "",
 		well: [],
 		notSo: [],
 		work: [],
-		actions: []
+		actions: [],
+		inputValue: "",
+		cardText: "",
+		temp: null
 	}
 
 	renderCard = section =>
@@ -16,11 +20,35 @@ class Board extends Component {
 		))
 
 	addCard = section => {
+		this.state.currentSection = section
 		this.setState({
-			[section]: [...this.state[section], ""]
+			temp: (
+				<Card
+					text=""
+					value={this.state.inputValue}
+					handleChange={this.handleChange}
+					handleKeyUp={this.handleKeyUp}
+				/>
+			)
 		})
+	}
 
-		console.log(this.state[section])
+	handleChange = e => {
+		this.setState({
+			inputValue: e.target.value
+		})
+	}
+	handleKeyUp = e => {
+		if (e.keyCode === 13) {
+			let currentSection = this.state.currentSection
+			this.setState({
+				[currentSection]: [...this.state[currentSection], e.target.value],
+				currentSection: "",
+				inputValue: "",
+				cardText: "",
+				temp: null
+			})
+		}
 	}
 
 	render() {
@@ -40,6 +68,7 @@ class Board extends Component {
 								</small>
 							</h2>
 							{this.renderCard("well")}
+							{this.state.temp}
 						</div>
 						<div className="col-xs-12 col-md-6">
 							<h2 className="text-center text-capitalize">what didnt</h2>
