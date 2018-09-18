@@ -11,7 +11,13 @@ class Board extends Component {
 		actions: [],
 		inputValue: "",
 		cardText: "",
-		temp: null
+		temp: null,
+		keyToTitle: [
+			{ well: "what went well" },
+			{ notSo: "what did not" },
+			{ work: "what needs work" },
+			{ actions: "action items" }
+		]
 	}
 
 	renderCard = section =>
@@ -20,7 +26,7 @@ class Board extends Component {
 		))
 
 	addCard = section => {
-		this.state.currentSection = section
+		// this.state.currentSection = section
 		this.setState({
 			temp: (
 				<Card
@@ -29,7 +35,8 @@ class Board extends Component {
 					handleChange={this.handleChange}
 					handleKeyUp={this.handleKeyUp}
 				/>
-			)
+			),
+			currentSection: section
 		})
 	}
 
@@ -38,6 +45,7 @@ class Board extends Component {
 			inputValue: e.target.value
 		})
 	}
+
 	handleKeyUp = e => {
 		if (e.keyCode === 13) {
 			let currentSection = this.state.currentSection
@@ -51,36 +59,93 @@ class Board extends Component {
 		}
 	}
 
+	closeModal = () => {
+		this.setState({
+			currentSection: "",
+			inputValue: "",
+			cardText: "",
+			temp: null
+		})
+	}
+
 	render() {
 		return (
 			<div id="board">
 				<div className="container-fluid">
 					<div className="row">
-						<div className="col-xs-12 col-md-6">
+						<div className="col-xs-12 col-md-6 retro-area">
 							<h2 className="text-center text-capitalize">
 								what went well
 								<small>
-									<button
-										className="btn btn-success btn-sm align-middle"
+									<span
+										className="badge badge-success"
 										onClick={() => this.addCard("well")}>
 										+
-									</button>
+									</span>
 								</small>
 							</h2>
 							{this.renderCard("well")}
-							{this.state.temp}
 						</div>
-						<div className="col-xs-12 col-md-6">
-							<h2 className="text-center text-capitalize">what didnt</h2>
+						<div className="col-xs-12 col-md-6 retro-area">
+							<h2 className="text-center text-capitalize">
+								what didnt
+								<small>
+									<span
+										className="badge badge-success"
+										onClick={() => this.addCard("notSo")}>
+										+
+									</span>
+								</small>
+							</h2>
+							{this.renderCard("notSo")}
 						</div>
-						<div className="col-xs-12 col-md-6">
-							<h2 className="text-center text-capitalize">what needs work</h2>
+						<div className="col-xs-12 col-md-6 retro-area">
+							<h2 className="text-center text-capitalize">
+								what needs work
+								<small>
+									<span
+										className="badge badge-success"
+										onClick={() => this.addCard("work")}>
+										+
+									</span>
+								</small>
+							</h2>
+							{this.renderCard("work")}
 						</div>
-						<div className="col-xs-12 col-md-6">
-							<h2 className="text-center text-capitalize">action items</h2>
+						<div className="col-xs-12 col-md-6 retro-area">
+							<h2 className="text-center text-capitalize">
+								action items
+								<small>
+									<span
+										className="badge badge-success"
+										onClick={() => this.addCard("actions")}>
+										+
+									</span>
+								</small>
+							</h2>
+							{this.renderCard("actions")}
 						</div>
 					</div>
 				</div>
+
+				{this.state.temp ? (
+					<div className="input-box col-xs-12 col-md-6 mx-auto">
+						<h1 className="text-capitalize">
+							Add {this.state.currentSection}
+							{/* {this.state.keyToTitle[this.state.currentSection]} */}
+							<small>
+								<span
+									onClick={this.closeModal}
+									className="badge badge-danger float-right align-top">
+									x
+								</span>
+							</small>
+						</h1>
+						{this.state.temp}
+					</div>
+				) : (
+					""
+				)}
 			</div>
 		)
 	}
