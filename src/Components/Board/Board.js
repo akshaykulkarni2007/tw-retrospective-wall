@@ -12,12 +12,12 @@ class Board extends Component {
 		inputValue: "",
 		cardText: "",
 		temp: null,
-		keyToTitle: [
-			{ well: "what went well" },
-			{ notSo: "what did not" },
-			{ work: "what needs work" },
-			{ actions: "action items" }
-		]
+		keyToTitle: new Map([
+			["well", "what went well"],
+			["notSo", "what did not"],
+			["work", "what needs work"],
+			["actions", "action items"]
+		])
 	}
 
 	renderCard = section =>
@@ -59,6 +59,8 @@ class Board extends Component {
 		}
 	}
 
+	getTitle = section => this.state.keyToTitle.get(section)
+
 	closeModal = () => {
 		this.setState({
 			currentSection: "",
@@ -74,7 +76,7 @@ class Board extends Component {
 				<div className="container-fluid">
 					<div className="row">
 						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize">
+							<h2 className="text-center text-capitalize text-success">
 								what went well
 								<small>
 									<span
@@ -87,7 +89,7 @@ class Board extends Component {
 							{this.renderCard("well")}
 						</div>
 						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize">
+							<h2 className="text-center text-capitalize text-danger">
 								what didnt
 								<small>
 									<span
@@ -100,7 +102,7 @@ class Board extends Component {
 							{this.renderCard("notSo")}
 						</div>
 						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize">
+							<h2 className="text-center text-capitalize text-warning">
 								what needs work
 								<small>
 									<span
@@ -113,7 +115,7 @@ class Board extends Component {
 							{this.renderCard("work")}
 						</div>
 						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize">
+							<h2 className="text-center text-capitalize text-primary">
 								action items
 								<small>
 									<span
@@ -131,8 +133,7 @@ class Board extends Component {
 				{this.state.temp ? (
 					<div className="input-box col-xs-12 col-md-6 mx-auto">
 						<h1 className="text-capitalize">
-							Add {this.state.currentSection}
-							{/* {this.state.keyToTitle[this.state.currentSection]} */}
+							Add <em>{this.getTitle(this.state.currentSection)}</em>
 							<small>
 								<span
 									onClick={this.closeModal}
