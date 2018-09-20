@@ -131,7 +131,7 @@ class Board extends Component {
 				</div>
 
 				{this.state.temp ? (
-					<div className="input-box col-xs-12 col-md-6 mx-auto">
+					<div className="input-box col-xs-12 col-lg-6 mx-auto">
 						<h1 className="text-capitalize">
 							Add <em>{this.getTitle(this.state.currentSection)}</em>
 							<small>

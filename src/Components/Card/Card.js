@@ -2,7 +2,7 @@ import React from "react"
 
 const Card = props => {
 	return (
-		<div className="card col-xs-12 col-md-6 mx-auto">
+		<div className="card col-xs-12 ">
 			<div className="card-body text-center">
 				{props.text === "" ? (
 					<input

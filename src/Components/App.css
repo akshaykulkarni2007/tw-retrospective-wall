@@ -29,3 +29,10 @@
 	vertical-align: text-top;
 	margin: 0 1rem;
 }
+
+@media (max-width: 1023px) {
+	.input-box {
+		top: 10%;
+		left: 0;
+	}
+}
