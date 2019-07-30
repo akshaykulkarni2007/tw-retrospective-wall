@@ -4,29 +4,19 @@ import Card from "../Card/Card"
 
 class Board extends Component {
 	state = {
-		currentSection: "",
-		well: [],
-		notSo: [],
-		work: [],
-		actions: [],
+		cards: [],
 		inputValue: "",
-		cardText: "",
-		temp: null,
-		keyToTitle: new Map([
-			["well", "what went well"],
-			["notSo", "what did not"],
-			["work", "what needs work"],
-			["actions", "action items"]
-		])
+		currentSection: "",
+		temp: null
 	}
 
-	renderCard = section =>
-		this.state[section].map(item => (
-			<Card key={Math.random() * 1000} text={item} />
-		))
+	renderCard = section => {
+		const cardsToRender = this.state.cards.filter(card => card.section === section)
+
+		return cardsToRender.map(card => <Card key={Math.random() * 1000} text={card.text} />)
+	}
 
 	addCard = section => {
-		// this.state.currentSection = section
 		this.setState({
 			temp: (
 				<Card
@@ -48,14 +38,17 @@ class Board extends Component {
 
 	handleKeyUp = e => {
 		if (e.keyCode === 13) {
-			let currentSection = this.state.currentSection
-			this.setState({
-				[currentSection]: [...this.state[currentSection], e.target.value],
-				currentSection: "",
-				inputValue: "",
-				cardText: "",
-				temp: null
-			})
+			const newCard = {section: this.state.currentSection, text: this.state.inputValue}
+			this.setState(
+				{
+					cards: [...this.state.cards, newCard],
+					inputValue: "",
+					temp: null
+				},
+				() => {
+					this.setToLS()
+				}
+			)
 		}
 	}
 
@@ -65,9 +58,25 @@ class Board extends Component {
 		this.setState({
 			currentSection: "",
 			inputValue: "",
-			cardText: "",
 			temp: null
 		})
+	}
+
+	getFromLS = () => {
+		if (localStorage.getItem("retro-cards")) {
+			const data = JSON.parse(localStorage.getItem("retro-cards"))
+			this.setState({
+				cards: data
+			})
+		}
+	}
+
+	setToLS = () => {
+		localStorage.setItem("retro-cards", JSON.stringify(this.state.cards))
+	}
+
+	componentDidMount() {
+		this.getFromLS()
 	}
 
 	render() {
@@ -133,7 +142,7 @@ class Board extends Component {
 				{this.state.temp ? (
 					<div className="input-box col-xs-12 col-lg-6 mx-auto">
 						<h1 className="text-capitalize">
-							Add <em>{this.getTitle(this.state.currentSection)}</em>
+							Add <em>{this.state.currentSection}</em>
 							<small>
 								<span
 									onClick={this.closeModal}
