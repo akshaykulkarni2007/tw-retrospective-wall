@@ -6,10 +6,17 @@
 ::-webkit-scrollbar-thumb {
 	background: #ff0000;
 }
+body {
+	height: 100vh;
+	overflow: hidden;
+}
 #board {
 	position: relative;
 }
-.retro-area {
+.card {
+	min-height: 2rem;
+}
+.retro-cards {
 	height: 20vh;
 	margin: 5vh 0;
 	overflow-y: scroll;

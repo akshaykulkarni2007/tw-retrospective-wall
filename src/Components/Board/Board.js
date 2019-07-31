@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, {Component} from "react"
 
 import Card from "../Card/Card"
 
@@ -10,10 +10,31 @@ class Board extends Component {
 		temp: null
 	}
 
+	renderSection = (sectionId, sectionTitle, contextClass) => (
+		<div className="col-xs-12 col-md-6 retro-area">
+			<h2 className={"text-center text-capitalize text-" + contextClass}>
+				{sectionTitle}
+				<small>
+					<span
+						className="badge badge-success"
+						onClick={() => this.addCard(sectionId)}>
+						+
+					</span>
+				</small>
+			</h2>
+			<div className="container retro-cards">
+				<div className="row">{this.renderCard(sectionId)}</div>
+			</div>
+		</div>
+	)
 	renderCard = section => {
-		const cardsToRender = this.state.cards.filter(card => card.section === section)
+		const cardsToRender = this.state.cards.filter(
+			card => card.section === section
+		)
 
-		return cardsToRender.map(card => <Card key={Math.random() * 1000} text={card.text} />)
+		return cardsToRender.map(card => (
+			<Card key={Math.random() * 1000} text={card.text} />
+		))
 	}
 
 	addCard = section => {
@@ -21,6 +42,7 @@ class Board extends Component {
 			temp: (
 				<Card
 					text=""
+					classes="col-xs-12"
 					value={this.state.inputValue}
 					handleChange={this.handleChange}
 					handleKeyUp={this.handleKeyUp}
@@ -38,7 +60,10 @@ class Board extends Component {
 
 	handleKeyUp = e => {
 		if (e.keyCode === 13) {
-			const newCard = {section: this.state.currentSection, text: this.state.inputValue}
+			const newCard = {
+				section: this.state.currentSection,
+				text: this.state.inputValue
+			}
 			this.setState(
 				{
 					cards: [...this.state.cards, newCard],
@@ -84,63 +109,15 @@ class Board extends Component {
 			<div id="board">
 				<div className="container-fluid">
 					<div className="row">
-						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize text-success">
-								what went well
-								<small>
-									<span
-										className="badge badge-success"
-										onClick={() => this.addCard("well")}>
-										+
-									</span>
-								</small>
-							</h2>
-							{this.renderCard("well")}
-						</div>
-						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize text-danger">
-								what didnt
-								<small>
-									<span
-										className="badge badge-success"
-										onClick={() => this.addCard("notSo")}>
-										+
-									</span>
-								</small>
-							</h2>
-							{this.renderCard("notSo")}
-						</div>
-						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize text-warning">
-								what needs work
-								<small>
-									<span
-										className="badge badge-success"
-										onClick={() => this.addCard("work")}>
-										+
-									</span>
-								</small>
-							</h2>
-							{this.renderCard("work")}
-						</div>
-						<div className="col-xs-12 col-md-6 retro-area">
-							<h2 className="text-center text-capitalize text-primary">
-								action items
-								<small>
-									<span
-										className="badge badge-success"
-										onClick={() => this.addCard("actions")}>
-										+
-									</span>
-								</small>
-							</h2>
-							{this.renderCard("actions")}
-						</div>
+						{this.renderSection("well", "what went well", "success")}
+						{this.renderSection("notSo", "what didnt", "danger")}
+						{this.renderSection("work", "what needs work", "warning")}
+						{this.renderSection("actions", "action items", "info")}
 					</div>
 				</div>
 
 				{this.state.temp ? (
-					<div className="input-box col-xs-12 col-lg-6 mx-auto">
+					<div className="input-box col-md-6 mx-auto">
 						<h1 className="text-capitalize">
 							Add <em>{this.state.currentSection}</em>
 							<small>

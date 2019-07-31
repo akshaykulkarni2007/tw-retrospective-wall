@@ -1,20 +1,21 @@
 import React from "react"
 
-const Card = props => {
+const Card = ({text, classes, inputValue, handleChange, handleKeyUp}) => {
+	const cols = classes !== undefined ? classes : "col-md-4"
 	return (
-		<div className="card col-xs-12 ">
+		<div className={"card m-1 " + cols}>
 			<div className="card-body text-center">
-				{props.text === "" ? (
+				{text === "" ? (
 					<input
 						className="form-control"
-						value={props.inputValue}
-						onChange={props.handleChange}
-						onKeyUp={props.handleKeyUp}
+						value={inputValue}
+						onChange={handleChange}
+						onKeyUp={handleKeyUp}
 						type="text"
 						autoFocus
 					/>
 				) : (
-					props.text
+					text
 				)}
 			</div>
 		</div>
